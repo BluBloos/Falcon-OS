@@ -1,0 +1,189 @@
+/*
+port16bit dataPort;
+port8bit errorPort;
+8bit sectorCountPort;
+8bit lbaLowPort;
+8bit lbaMidPort;
+8bit lbaHightPort;
+8bit devicePort;
+8bit commandPort;
+8bit controlPort;
+*/
+/*
+struct hard_drive
+{
+  unsigned short bytesPerSector;
+  bool master;
+};
+
+hard_drive CreateHardDrive(unsigned short portBase, bool master)
+{
+  hard_drive newDrive;
+  newDrive.bytesPerSector = 512;
+  newDrive.master = master;
+  return newDrive;
+  /*
+  dataPort = portBase;
+  errorPort = portBase + 1;
+  sectorCountPort = portBase + 2;
+  lbaLowPort = portBase + 3;
+  lbaMidPort = portBase + 4;
+  lbaHiPort = portBase + 5;
+  devicePort = portBase + 6;
+  commandPort = portBase + 7
+  controlPort = portBase + 0x206;
+
+}
+*/
+
+//are you there, what are you?
+extern "C" void IdentifyATA(bool master)
+{
+
+  devicePort.Write(master ? 0xA0 : 0xB0);
+  controlPort.Write(0);
+
+  devicePort.Write(0xA0); //read status of master
+  unsigned char status = commandPort.Read();
+  if(status = 0xFF)
+  {
+    return; //there is no device on bus
+  }
+  devicePort.Write(master ? 0xA0 : 0xB0)
+  sectorCountPort.Write(0);
+  lbaLowPort.Write(0);
+  lbaMidPort.Write(0);
+  lbaHiPort.Write(0);
+  commandPort.Write(0xEC);
+  status = commandPort.Read();
+  if(status == 0x00)
+    return; //no device
+
+  while( ((status & 0x80) == 0x80) && ((status & 0x01) != 0x01) )
+  {
+    status = commandPort.Read();
+  }
+
+  if (status & 0x01)
+  {
+    Print("ERROR");
+  }
+
+  for(unsigned short i = 0; i < 256;i++)
+  {
+    unisgned short data = dataPort.Read();
+  }
+
+}
+
+void ATARead28(unsigned int sector, unsigned char *data, int count)
+{
+  if (sector & 0xF0000000) {
+    return;
+  }
+
+  if (count > bytesPerSector) {
+    return;
+  }
+
+  devicePort.Write( (drive.master ? 0xE0 : 0xF0) | ((sector & 0x0F000000 >> 24) );
+  errorPort.Write(0); //clear the error port
+  sectorCountPort.Write(1);
+
+  dlbaLowPort.Write(sector & 0x000000FF);
+  lbaMidPort.Write((sector & 0x0x0000FF00) >> 8);
+  lbaHiPort.Write((sector & 0x0x00FF0000) >> 16);
+  commandPort.Write(0x20);
+
+  unsigned char status = commandPort.Read();
+  while( ((status & 0x80) == 0x80) && ((status & 0x01) != 0x01) ) {
+    status = commandPort.Read();
+  }
+
+  if (status & 0x01)
+  {
+    Print("ERROR");
+    return;
+  }
+
+  Print("Reading to ATA");
+
+  for(unsigned short i = 0; i < count; i+=2)
+  {
+      unsigned short wdata = dataPort.Read();
+
+      char *foo = "  \0";
+      foo[1] = (wdata >> 8) & 0x00FF;
+      foo[0] = wdata & 0x00FF;
+      Print(foo);
+
+      data[i] = wdata & 0x00FF;
+      if (i+1<count){
+        data[i+1] = (wdata >> 8) & 0x00FF;
+      }
+  }
+
+  for(unsigned short i = count + (count % 2); i < bytesPerSector; i+=2)
+  {
+    dataPort.Read(); //fill the rest with 0
+      //otherwise the hard drive will keep waiting?
+  }
+}
+
+void ATAWrite28(hard_drive drive, unsigned int sector, unsigned char *data, int count)
+{
+  if (sector & 0xF0000000)
+  {
+    return;
+  }
+
+  if (count > bytesPerSector)
+  {
+    return;
+  }
+
+  devicePort.Write( (drive.master ? 0xE0 : 0xF0) | ((sector & 0x0F000000 >> 24) );
+  errorPort.Write(0); //clear the error port
+  sectorCountPort.Write(1);
+
+  lbaLowPort.Write(sector & 0x000000FF);
+  lbaMidPort.Write((sector & 0x0x0000FF00) >> 8);
+  lbaHiPort.Write((sector & 0x0x00FF0000) >> 16);
+  commandPort.Write(0x30);
+
+  Print("Writing to ATA");
+
+  for(unsigned short i = 0; i < count; i+=2)
+  {
+    unsigned short wdata = data[i];
+    if (i + 1 < count)
+    {
+      wdata |= ((unsigned short)data[i+1]) << 8;
+    }
+    dataPort.Write(wdata);
+  }
+
+  for(unsigned short i = count + (count % 2); i < bytesPerSector; i+=2)
+  {
+    dataPort.Write(0x0000); //fill the rest with 0
+    //otherwise the hard drive will keep waiting?
+  }
+
+}
+
+void FlushATA()
+{
+  devicePort.Write(drive.master ? 0xA0 : 0xB0);
+  commandPort.Write(0xE7); //flush command
+  unsigned char status = commandPort.Read();
+
+  while( ((status & 0x80) == 0x80) && ((status & 0x01) != 0x01) ) {
+    status = commandPort.Read();
+  }
+
+  if (status & 0x01)
+  {
+    Print("ERROR");
+    return;
+  }
+}
