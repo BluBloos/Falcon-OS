@@ -4,6 +4,7 @@
 extern "C" void GetCaret(unsigned short *row, unsigned short *column);
 extern "C" void SetCaret(unsigned short row, unsigned short column);
 
+
 void ByteToHex(unsigned char number, char *dest, bool isParent)
 {
   if(isParent)
@@ -91,7 +92,7 @@ extern "C" void Print(char *str)
     {
       column = 0;
       row++;
-      if (row > 25)
+      if (row > 24)
       {
         row = 0;
       }
@@ -103,10 +104,10 @@ extern "C" void Print(char *str)
 
     //advance the caret
     column++;
-    if(column > 80)
+    if(column > 79)
     {
       row++;
-      if (row > 25)
+      if (row > 24)
       {
         row = 0;
       }
@@ -239,4 +240,53 @@ extern "C" void DebugPrintGdt(global_descriptor_table *gdt)
     Print(stringBuffer);
     Print("\n");
   }
+}
+
+void AdvanceCaret()
+{
+  unsigned short row = 0;
+  unsigned short column = 0;
+  GetCaret(&row,&column);
+  column++;
+  if(column > 79){
+    row++;
+    if(row>24){
+      row = 0;
+    }
+    column = 0;
+  }
+  SetCaret(row, column);
+}
+
+void DecrementCaret()
+{
+  unsigned short row = 0;
+  unsigned short column = 0;
+  GetCaret(&row,&column);
+  short row_s = (short)row;
+  short column_s = (short)column;
+
+  column_s--;
+  if(column_s < 0){
+    row_s--;
+    if(row_s < 0){
+      row_s = 0;
+    }
+    column_s = 79;
+  }
+  SetCaret((unsigned short)row_s, (unsigned short)column_s);
+}
+
+void NewLine()
+{
+  unsigned short row = 0;
+  unsigned short column = 0;
+  GetCaret(&row,&column);
+  //column++;
+  row++;
+  if(row > 24){
+    row = 0;
+  }
+  column = 0;
+  SetCaret(row, column);
 }

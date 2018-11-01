@@ -4,12 +4,14 @@ OBJECTS=bin/ata.o \
  				bin/loader.o \
 				bin/interrupts.o \
 				bin/gdt.o \
+				bin/keyboard_c.o \
 				bin/keyboard.o \
-				bin/lib.o \
-				bin/kernel.o \
+				bin/kernel_helper.o \
+				bin/kernel_c.o \
 				bin/interrupts_c.o \
 				bin/gdt_c.o \
-				bin/lib_c.o
+				bin/lib_c.o \
+				bin/terminal_c.o
 
 bin/kernel.bin: $(OBJECTS)
 	ld $(LINKER_OPTIONS) $(OBJECTS) -o $@
@@ -49,5 +51,5 @@ run: bin/mykernel.iso
 .PHONY : clean
 clean:
 	rm *.log || true
-	rm -rf bin 
+	rm -rf bin
 	mkdir bin

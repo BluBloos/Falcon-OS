@@ -9,12 +9,12 @@
   .long CHECKSUM
 
 .section .text
-.extern kernel
+.extern Kernel
 .global loader
 
 loader:
   mov $kernel_stack, %esp
-  call kernel
+  call Kernel
 
 loader_stop:
   hlt

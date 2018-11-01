@@ -5,10 +5,10 @@ global gdt_struct
 section .data
 gdt_struct:
 dd gdt ;pointer to gdt data
-dd 0;first key
-dd 0;second key
-dd 0;third key
-dd 0;fourth key
+dd 0 ;first key
+dd 0 ;second key
+dd 0 ;third key
+dd 0 ;fourth key
 gdt:
 ;dq 0 ;space for null
 ;dq 0 ;space for unused

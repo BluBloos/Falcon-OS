@@ -15,10 +15,11 @@ global HandleInterruptRequest0x00
 global HandleInterruptRequest0x01
 global SetupPIC
 global LaunchInterruptTable
-global idt_start
+global GetInterruptDescriptorTable
+global EnableInterrupts
 
 extern Print
-extern PrintKey
+extern HandleKey
 
 section .data
 msg_interrupt:
@@ -28,6 +29,15 @@ times 2048 db 0
 idt_end:
 
 section .text
+EnableInterrupts:
+	sti
+	ret
+
+;extern "C" interrupt_descriptor *GetInterruptDescriptorTable();
+GetInterruptDescriptorTable:
+  mov eax, idt_start
+  ret
+
 InterruptIgnore:
   iret
 
@@ -51,16 +61,19 @@ HandleInterruptRequest0x01:
   pusha
 
   ;Print("INTERRUPT")
-  mov eax, msg_interrupt
-  push eax
-  call Print
-  pop eax
+  ;mov eax, msg_interrupt
+  ;push eax
+  ;call Print
+  ;pop eax
 
   ;fetch the key strike
   in al, 0x60
 
   ;print the key strike
-  ;call PrintKey
+	push eax
+  call HandleKey
+	pop eax
+
 
   ;tell the pic that we recieved the interrupt
   mov al, 0x20
