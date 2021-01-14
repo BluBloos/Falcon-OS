@@ -1,12 +1,14 @@
 #include <falcon.h>
 #include <falcon_messages.h>
+#include <strings.h>
 
 extern "C" void Print(char *string);
 extern "C" void GetCaret(unsigned short *row, unsigned short *column);
 extern "C" void SetCaret(unsigned short row, unsigned short column);
 
 void RegisterForMessages(int p, falcon_event event);
-command_result Submit(char *buffer);
+program CreateProgram(falcon_program *function);
+
 FALCON_PROGRAM(HelloWorld);
 
 static char terminalBuffer[2000];

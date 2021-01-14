@@ -11,7 +11,9 @@ OBJECTS=bin/ata.o \
 				bin/interrupts_c.o \
 				bin/gdt_c.o \
 				bin/lib_c.o \
-				bin/terminal_c.o
+				bin/terminal_c.o \
+				bin/strings_c.o \
+				bin/hello_world_c.o
 
 bin/kernel.bin: $(OBJECTS)
 	ld $(LINKER_OPTIONS) $(OBJECTS) -o $@
