@@ -22,7 +22,7 @@ Canonical "Hello, World!" program
 ```
 $ hello
 ```
-Prints out the first 10 numbers in the fibonacci sequence in hexidecimal. 
+Prints out the first 10 numbers of the fibonacci sequence in hexidecimal. 
 ```
 $ fib
 ```
