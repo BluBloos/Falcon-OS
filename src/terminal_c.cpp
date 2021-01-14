@@ -10,6 +10,7 @@ void RegisterForMessages(int p, falcon_event event);
 program CreateProgram(falcon_program *function);
 
 FALCON_PROGRAM(HelloWorld);
+FALCON_PROGRAM(Fib);
 
 static char terminalBuffer[2000];
 short offset;
@@ -60,6 +61,10 @@ command_result Submit(char *buffer)
   {
     result.msg = FM_SUCCESS;
     result.exec = CreateProgram(HelloWorld);
+  } else if (StringEquals(buffer, "fib"))
+  {
+    result.msg = FM_SUCCESS;
+    result.exec = CreateProgram(Fib);
   }
   return result;
 }

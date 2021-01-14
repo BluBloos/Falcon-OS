@@ -13,7 +13,8 @@ OBJECTS=bin/ata.o \
 				bin/lib_c.o \
 				bin/terminal_c.o \
 				bin/strings_c.o \
-				bin/hello_world_c.o
+				bin/hello_world_c.o \
+				bin/fib_c.o
 
 bin/kernel.bin: $(OBJECTS)
 	ld $(LINKER_OPTIONS) $(OBJECTS) -o $@
