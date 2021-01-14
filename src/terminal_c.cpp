@@ -1,12 +1,13 @@
 #include <falcon.h>
 #include <falcon_messages.h>
 
-void RegisterForMessages(int p, falcon_event event);
-command_result Submit(char *buffer);
 extern "C" void Print(char *string);
 extern "C" void GetCaret(unsigned short *row, unsigned short *column);
 extern "C" void SetCaret(unsigned short row, unsigned short column);
 
+void RegisterForMessages(int p, falcon_event event);
+command_result Submit(char *buffer);
+FALCON_PROGRAM(HelloWorld);
 
 static char terminalBuffer[2000];
 short offset;
@@ -49,7 +50,17 @@ void UpdateCaret()
   SetCaret(newRow, newColumn);
 }
 
-
+command_result Submit(char *buffer)
+{
+  command_result result;
+  result.msg = FM_ERROR;
+  if(StringEquals(buffer, "hello"))
+  {
+    result.msg = FM_SUCCESS;
+    result.exec = CreateProgram(HelloWorld);
+  }
+  return result;
+}
 
 FALCON_EVENT(TerminalMessageProc)
 {
@@ -63,7 +74,7 @@ FALCON_EVENT(TerminalMessageProc)
         Print("command not found\nroot:/>");
       } else
       {
-        //TODO(Noah): Add ability for parameters
+        // TODO(Noah): Add ability for parameters
         result.exec.Entry(result.exec.id, 0, NULL);
         Print("\nroot:/>");
       }

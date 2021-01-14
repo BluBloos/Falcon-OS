@@ -10,6 +10,7 @@ extern "C" void SetupGlobalDescriptorTable(global_descriptor_table *gdt);
 extern "C" void SetupInterrupts(global_descriptor_table *gdt, interrupt_descriptor *idt);
 extern "C" interrupt_descriptor *GetInterruptDescriptorTable();
 extern "C" void EnableInterrupts();
+
 FALCON_PROGRAM(Terminal);
 
 program CreateProgram(falcon_program *function)
@@ -31,23 +32,6 @@ void RegisterForMessages(int id, falcon_event event)
   unsigned int length = 0;
   program *programs =  (program *)GetPrograms(&length);
   programs[id].PassKeyEvent = event;
-}
-
-FALCON_PROGRAM(HelloWorld)
-{
-  Print("Hello, World!");
-}
-
-command_result Submit(char *buffer)
-{
-  command_result result;
-  result.msg = FM_ERROR;
-  if(StringEquals(buffer, "hello"))
-  {
-    result.msg = FM_SUCCESS;
-    result.exec = CreateProgram(HelloWorld);
-  }
-  return result;
 }
 
 extern "C" void Kernel()
