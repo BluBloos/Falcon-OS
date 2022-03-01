@@ -1,13 +1,13 @@
 # Falcon-OS 🦅 
-My go at writing an operating system written in x86 assembly and C/C++.
+My go at writing an operating system - written in x86 assembly and C/C++.
 
 ## Features
-The term "operating system" is used very loosely. In terms of user interaction, the user is able to interact with the system via a terminal interface. There are two commands.
+The term "operating system" is used very loosely. In terms of user interaction, the user is able to interact with the system via a terminal interface. 
 
 Here's what's going on behind the scenes:
 
-- The operating system functions as a bootable live CD, much like variuos Linux distributions 
-- grub-mkresuce is used to make the .iso file
+- The operating system functions as a bootable live CD, much like various Linux distributions 
+- grub-mkrescue is used to make the .iso file
 - grub loads the kernel, which does the following before handing off control to the custom terminal program
   - Sets up a program stack for use by the kernel
   - Sets up the global descriptor table
@@ -33,4 +33,4 @@ In order to run the operating system, it is preferred to sandbox it inside a vir
 ```
 $ make bin/mykernel.iso
 ```
-This will build the project and package the code into an ISO file. To run the operating system, create a new virtul machine in virtual box. Note that it is not needed to create a hard drive for the machine. Once you have created a new virtual machine, run the machine and load the ISO file into the optical drive.   
+This will build the project and package the code into an ISO file. To run the operating system, create a new virtual machine in virtual box. Note that it is not needed to create a hard drive for the machine. Once you have created a new virtual machine, run the machine and load the ISO file into the optical drive.   
