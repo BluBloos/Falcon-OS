@@ -5,22 +5,58 @@ The term "operating system" is used very loosely. There is a terminal, and there
 
 ## Commands
 Canonical "Hello, World!" program
-```
-$ hello
+
+```bash
+hello
 ```
 Prints out the first 10 numbers of the fibonacci sequence in hexadecimal. 
-```
-$ fib
+
+```bash
+fib
 ```
 
 # Steps for Building
-- NOTE: This project can only be built in a Linux environment, Windows users beware.
 
-In order to run the operating system, it is preferred to sandbox it inside a virtual environment. The project is tested with the latest version of <a href="https://www.virtualbox.org/">Virtual Box</a> (Version 6.1 at the time of writing). Simply clone the project and run the following command inside the project directory.
+This project can only be built in a Linux environment - Windows and macOS users beware.
+
+When building this project, I run Ubuntu 20.04.3 in VirtualBox. The OS is built as a binary that is then loaded via grub. 
+
+I am unsure if the project will work when running Ubuntu as a native host. My best guess is that this should work as well.
+
+Start by cloning the repo and installing the necessary tools for building the OS.
+
+```bash
+sudo apt-get install make nasm
 ```
-$ make bin/mykernel.iso
+
+To build and install the OS binary, run make
+
 ```
-This will build the project and package the code into an ISO file. To run the operating system, create a new virtual machine in virtual box. Note that it is not needed to create a hard drive for the machine. Once you have created a new virtual machine, run the machine and load the ISO file into the optical drive.   
+make install
+```
+
+To run the OS, it will depend on the configuration of your Ubuntu install. We run the OS by selecting "Falcon OS" as a menu option in grub. On a default Ubuntu install, the grub menu is disabled.
+
+## Enabling the grub menu
+
+The following instructions are in reference to this stack exchange discussion: https://askubuntu.com/questions/182248/why-is-grub-menu-not-shown-when-starting-my-computer
+
+
+Open /etc/default/grub
+
+```
+sudo nano /etc/default/grub
+```
+
+Comment out the lines "GRUB_TIMEOUT_STYLE=hidden" and "GRUB_TIMEOUT=0"/. Also uncomment "GRUB_TERMINAL=console".
+
+Write to the file with ctrl+o and close nano with ctrl+x.
+
+Finally, we must insert a menu entry for our OS into grub.cfg. Run make install again.
+
+```
+make install
+```
 
 # Features
 

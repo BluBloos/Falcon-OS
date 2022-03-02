@@ -1,20 +1,20 @@
 LINKER_OPTIONS=-melf_i386 -T linker.ld
 COMPILER_OPTIONS=-Iinclude -c -m32 -fno-use-cxa-atexit -nostdlib -fno-builtin -fno-rtti -fno-exceptions -fno-leading-underscore
 OBJECTS=bin/ata.o \
- 				bin/loader.o \
-				bin/interrupts.o \
-				bin/gdt.o \
-				bin/keyboard_c.o \
-				bin/keyboard.o \
-				bin/kernel_helper.o \
-				bin/kernel_c.o \
-				bin/interrupts_c.o \
-				bin/gdt_c.o \
-				bin/lib_c.o \
-				bin/terminal_c.o \
-				bin/strings_c.o \
-				bin/hello_world_c.o \
-				bin/fib_c.o
+	bin/loader.o \
+	bin/interrupts.o \
+	bin/gdt.o \
+	bin/keyboard_c.o \
+	bin/keyboard.o \
+	bin/kernel_helper.o \
+	bin/kernel_c.o \
+	bin/interrupts_c.o \
+	bin/gdt_c.o \
+	bin/lib_c.o \
+	bin/terminal_c.o \
+	bin/strings_c.o \
+	bin/hello_world_c.o \
+	bin/fib_c.o
 
 bin/kernel.bin: $(OBJECTS)
 	ld $(LINKER_OPTIONS) $(OBJECTS) -o $@
@@ -45,6 +45,11 @@ bin/mykernel.iso: bin/kernel.bin
 .PHONY: install
 install: bin/kernel.bin
 	sudo cp bin/kernel.bin /boot/mykernel.bin
+	sudo update-grub
+	sudo bash -c "echo 'menuentry \"Falcon OS\" {' >> /boot/grub/grub.cfg"
+	sudo bash -c "echo \"  multiboot /boot/mykernel.bin\" >> /boot/grub/grub.cfg"
+	sudo bash -c "echo \"  boot\" >> /boot/grub/grub.cfg"
+	sudo bash -c "echo \"}\" >> /boot/grub/grub.cfg"
 
 .PHONY : run
 run: bin/mykernel.iso

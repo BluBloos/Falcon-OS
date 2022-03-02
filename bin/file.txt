@@ -1,0 +1,2 @@
+This file exists solely for the purpose of ensuring that this directory exists
+when someone clones the repo.
