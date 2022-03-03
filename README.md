@@ -65,8 +65,6 @@ Simply reboot your computer (or the VirtualBox VM), then select "Falcon OS" from
 
 # Features
 
-- The operating system functions as a bootable live CD, much like various Linux distributions 
-- grub-mkrescue is used to make the .iso file
 - grub loads the kernel, which does the following before handing off control to the custom terminal program
   - Sets up a program stack
   - Sets up the global descriptor table
