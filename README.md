@@ -51,7 +51,7 @@ Open /etc/default/grub
 sudo nano /etc/default/grub
 ```
 
-Comment out the lines "GRUB_TIMEOUT_STYLE=hidden" and "GRUB_TIMEOUT=0"/. Also uncomment "GRUB_TERMINAL=console".
+Comment out the lines "GRUB_TIMEOUT_STYLE=hidden" and "GRUB_TIMEOUT=0". Also uncomment "GRUB_TERMINAL=console".
 
 Write to the file with ctrl+o and close nano with ctrl+x.
 
@@ -60,6 +60,8 @@ Finally, we must insert a menu entry for our OS into grub.cfg. Run make install 
 ```
 make install
 ```
+
+Simply reboot your computer (or the VirtualBox VM), then select "Falcon OS" from the menu.
 
 # Features
 
