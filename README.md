@@ -1,7 +1,7 @@
-
-![Screen Recording 2022-03-02 at 8 29 42 AM](https://user-images.githubusercontent.com/38915815/156371295-d5505f12-caea-42b8-a043-93c5b217eed9.gif)
+<img width="1082" alt="Screen Shot 2022-03-02 at 7 49 18 AM" src="https://user-images.githubusercontent.com/38915815/157033321-df529812-9a86-4c3a-85ab-c2d43af0a046.png">
 
 # Falcon-OS 🦅 
+
 My go at writing an operating system - written in x86 assembly and C/C++.
 
 The term "operating system" is used very loosely. There is a terminal, and there exists two commands. That's it.
